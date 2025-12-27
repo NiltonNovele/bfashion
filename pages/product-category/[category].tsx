@@ -39,6 +39,9 @@ const ProductCategory: React.FC<Props> = ({
   const firstIndex = page === 1 ? 1 : page * 10 - 9;
   const lastIndex = page * 10;
 
+  const baseURL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
+
   return (
     <div>
       <Header title={`${capitalizedCategory} - BFashion`} />
@@ -112,6 +115,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   let items: itemType[] = [];
   let numberOfProducts = 0;
 
+  const baseURL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
+
   const fallbackProduct: itemType = {
     id: 1,
     name: "Produto indisponível",
@@ -131,7 +137,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
     if (category !== "new-arrivals") {
       const countRes = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products?category=${category}`
+        `${baseURL}/api/v1/products?category=${category}`
       );
 
       numberOfProducts = countRes.data.count;
@@ -140,11 +146,11 @@ export const getServerSideProps: GetServerSideProps = async ({
     }
 
     const url =
-      category === "new-arrivals"
-        ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products?order_by=createdAt.desc&limit=10`
-        : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products?order_by=${orderMap[orderby]}&offset=${start}&limit=10&category=${category}`;
+  category === "new-arrivals"
+    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products?order_by=createdAt.desc&limit=10`
+    : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products?order_by=${orderMap[orderby]}&offset=${start}&limit=10&category=${category}`;
 
-    const res = await axios.get(url);
+const res = await axios.get(url);
 
     items = res.data.data.map((product: apiProductsType) => ({
       id: product.id,

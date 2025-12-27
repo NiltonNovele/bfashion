@@ -56,6 +56,8 @@ const Product: React.FC<Props> = ({ product, products }) => {
       : addToWishlist?.(currentItem);
   };
 
+  
+
   return (
     <div>
       <Header title={`${product.name} - Haru Fashion`} />
@@ -234,12 +236,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     categoryName: "geral",
   };
 
+  const baseURL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
+
   let product = fallbackProduct;
   let products: itemType[] = [];
 
   try {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products/${params?.id}`
+      `${baseURL}/api/v1/products/${params?.id}`
     );
 
     const data = res.data.data;
@@ -255,7 +260,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     };
 
     const related = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products?category=${product.categoryName}`
+      `${baseURL}/api/v1/products?category=${product.categoryName}`
     );
 
     products = related.data.data.slice(0, 5).map((p: apiProductsType) => ({
