@@ -149,24 +149,24 @@ export default function Menu() {
                         Sobre
                       </a>
                     </Link>
-                    <Link href="/contact">
+                    {/* <Link href="/contact">
                       <a
                         className="w-full text-xl hover:bg-gray100 text-left py-2"
                         onClick={closeModal}
                       >
                         Contactos
                       </a>
-                    </Link>
+                    </Link> */}
 
                     <hr className="border border-gray300 w-full mt-2" />
 
                     {/* Auth/Profile */}
-                    <div className="w-full text-xl py-2 my-3 flex justify-between">
+                    {/* <div className="w-full text-xl py-2 my-3 flex justify-between">
                       <AuthForm extraClass="flex justify-between w-full">
                         <span>Iniciar Sessão / Perfil</span>
                         <UserIcon />
                       </AuthForm>
-                    </div>
+                    </div> */}
 
                     <hr className="border border-gray300 w-full" />
 

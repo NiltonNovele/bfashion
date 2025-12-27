@@ -139,11 +139,11 @@ const Header: React.FC<Props> = ({ title }) => {
               <li>
                 <SearchForm />
               </li>
-              <li>
+              {/* <li>
                 <AuthForm>
                   <UserIcon />
                 </AuthForm>
-              </li>
+              </li> */}
               <li>
                 <Link href="/wishlist" passHref>
                   <button

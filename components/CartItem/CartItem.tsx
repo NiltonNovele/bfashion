@@ -122,7 +122,7 @@ export default function CartItem() {
                   <div className="btnContainer mt-4 px-4 h-1/3 mb-20 w-full flex flex-col">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
-                      <span>€ {roundDecimal(subtotal)}</span>
+                      <span>MZN {roundDecimal(subtotal)}</span>
                     </div>
 
                     <LinkButton

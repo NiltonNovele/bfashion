@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import axios from "axios";
 import Image from "next/image";
 
@@ -153,6 +153,11 @@ const ShoppingCart = () => {
   if (deli === "YANGON") deliFee = 2.0;
   else if (deli === "OTHERS") deliFee = 7.0;
 
+  // Type-safe handlers
+  const handleInputChange = (setter: (val: string) => void) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setter(e.target.value);
+  };
+
   return (
     <div>
       <Header title={`Carrinho de Compras - BFashion`} />
@@ -166,7 +171,6 @@ const ShoppingCart = () => {
 
         {!completedOrder ? (
           <div className="app-max-width px-4 sm:px-8 md:px-20 mb-14 flex flex-col lg:flex-row">
-            {/* Formulário */}
             <div className="h-full w-full lg:w-7/12 mr-8">
               {errorMsg && <span className="text-red-600 font-semibold">{errorMsg}</span>}
 
@@ -176,7 +180,7 @@ const ShoppingCart = () => {
                   name="name"
                   type="text"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={handleInputChange(setName)}
                   required
                   extraClass="w-full mt-1 mb-2"
                   border="border-2 border-gray400"
@@ -190,7 +194,7 @@ const ShoppingCart = () => {
                   type="email"
                   value={email}
                   readOnly={!!auth.user}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleInputChange(setEmail)}
                   required
                   extraClass={`w-full mt-1 mb-2 ${auth.user ? "bg-gray100 cursor-not-allowed" : ""}`}
                   border="border-2 border-gray400"
@@ -204,7 +208,7 @@ const ShoppingCart = () => {
                     name="password"
                     type="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={handleInputChange(setPassword)}
                     required
                     extraClass="w-full mt-1 mb-2"
                     border="border-2 border-gray400"
@@ -218,7 +222,7 @@ const ShoppingCart = () => {
                   name="phone"
                   type="text"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={handleInputChange(setPhone)}
                   required
                   extraClass="w-full mt-1 mb-2"
                   border="border-2 border-gray400"
@@ -231,7 +235,7 @@ const ShoppingCart = () => {
                   className="w-full mt-1 mb-2 border-2 border-gray400 p-4 outline-none"
                   rows={4}
                   value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  onChange={handleInputChange(setAddress)}
                 />
               </div>
 
@@ -252,7 +256,7 @@ const ShoppingCart = () => {
                     className="w-full mt-1 mb-2 border-2 border-gray400 p-4 outline-none"
                     rows={4}
                     value={shippingAddress}
-                    onChange={(e) => setShippingAddress(e.target.value)}
+                    onChange={handleInputChange(setShippingAddress)}
                   />
                 </div>
               )}
@@ -264,7 +268,6 @@ const ShoppingCart = () => {
               )}
             </div>
 
-            {/* Resumo da Encomenda */}
             <div className="h-full w-full lg:w-5/12 mt-10 lg:mt-4">
               <div className="border border-gray500 p-6 divide-y-2 divide-gray200">
                 <div className="flex justify-between">
@@ -278,14 +281,14 @@ const ShoppingCart = () => {
                       <span className="text-base font-medium">
                         {item.name} <span className="text-gray400">x {item.qty}</span>
                       </span>
-                      <span className="text-base">$ {roundDecimal(item.price * item.qty!)}</span>
+                      <span className="text-base">MZN {roundDecimal(item.price * item.qty!)}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="py-3 flex justify-between">
                   <span className="uppercase">Subtotal</span>
-                  <span>$ {subtotal}</span>
+                  <span>MZN {subtotal}</span>
                 </div>
 
                 <div className="py-3">
@@ -300,7 +303,7 @@ const ShoppingCart = () => {
                           checked={deli === "STORE_PICKUP"}
                           onChange={() => setDeli("STORE_PICKUP")}
                         />
-                        <label className="ml-2 cursor-pointer">Levantar na loja</label>
+                        <label className="ml-2 cursor-pointer">Levantar</label>
                       </div>
                       <span>Grátis</span>
                     </div>
@@ -313,9 +316,9 @@ const ShoppingCart = () => {
                           checked={deli === "YANGON"}
                           onChange={() => setDeli("YANGON")}
                         />
-                        <label className="ml-2 cursor-pointer">Dentro de Yangon</label>
+                        <label className="ml-2 cursor-pointer">Dentro de Maputo</label>
                       </div>
-                      <span>$ 2.00</span>
+                      <span>MZN 200.00</span>
                     </div>
                     <div className="flex justify-between">
                       <div>
@@ -328,17 +331,16 @@ const ShoppingCart = () => {
                         />
                         <label className="ml-2 cursor-pointer">Outras cidades</label>
                       </div>
-                      <span>$ 7.00</span>
+                      <span>MZN 700.00</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex justify-between py-3">
                   <span className="uppercase">Total Geral</span>
-                  <span>$ {roundDecimal(+subtotal + deliFee)}</span>
+                  <span>MZN {roundDecimal(+subtotal + deliFee)}</span>
                 </div>
 
-                {/* Método de Pagamento */}
                 <div className="grid gap-4 mt-2 mb-4">
                   <label className="flex flex-col bg-white p-5 rounded-lg shadow-md border border-gray300 cursor-pointer relative">
                     Dinheiro na entrega
@@ -355,9 +357,9 @@ const ShoppingCart = () => {
                   </label>
 
                   <label className="flex flex-col bg-white p-5 rounded-lg shadow-md border border-gray300 cursor-pointer relative">
-                    Transferência Bancária
+                    Pagamento seguro online 
                     <span className="text-gray400 text-sm mt-1">
-                      Pague diretamente na sua conta bancária.
+                      MPESA | MKESH | EMOLA | VISA
                     </span>
                     <input
                       type="radio"
@@ -395,7 +397,6 @@ const ShoppingCart = () => {
             </div>
           </div>
         ) : (
-          // Página de Confirmação
           <div className="app-max-width px-4 sm:px-8 md:px-20 mb-14 mt-6">
             <div className="text-gray400 text-base">
               Obrigado pela sua encomenda! A sua encomenda foi recebida com sucesso.
@@ -435,7 +436,7 @@ const ShoppingCart = () => {
                 </div>
                 <div className="flex justify-between mt-2">
                   <span className="uppercase">Total</span>
-                  <span>$ {completedOrder?.totalPrice}</span>
+                  <span>MZN {completedOrder?.totalPrice}</span>
                 </div>
               </div>
 

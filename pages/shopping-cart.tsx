@@ -28,7 +28,7 @@ const ShoppingCart = () => {
   return (
     <div>
       {/* ===== Cabeçalho ===== */}
-      <Header title="Carrinho de Compras - Haru Fashion" />
+      <Header title="Carrinho de Compras - BFashion" />
 
       <main id="main-content">
         {/* ===== Título e voltar ===== */}
@@ -94,7 +94,7 @@ const ShoppingCart = () => {
                         </td>
 
                         <td className="text-right text-gray400 hidden sm:table-cell">
-                          € {roundDecimal(item.price)}
+                          MZN {roundDecimal(item.price)}
                         </td>
 
                         <td>
@@ -118,10 +118,10 @@ const ShoppingCart = () => {
                         </td>
 
                         <td className="text-right text-gray400">
-                          € {roundDecimal(item.price * item.qty!)}
+                          MZN {roundDecimal(item.price * item.qty!)}
                           <br />
                           <span className="text-xs">
-                            (€ {roundDecimal(item.price)})
+                            (MZN {roundDecimal(item.price)})
                           </span>
                         </td>
 
@@ -156,7 +156,7 @@ const ShoppingCart = () => {
 
               <div className="flex justify-between py-2">
                 <span className="uppercase">Subtotal</span>
-                <span>€ {roundDecimal(subtotal)}</span>
+                <span>MZN {roundDecimal(subtotal)}</span>
               </div>
 
               <div className="py-3">
@@ -173,26 +173,10 @@ const ShoppingCart = () => {
                         onChange={() => setDeli("Pickup")}
                       />{" "}
                       <label htmlFor="pickup" className="cursor-pointer">
-                        Levantamento em loja
+                        Levantamento em Maputo
                       </label>
                     </div>
                     <span>Grátis</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <div>
-                      <input
-                        type="radio"
-                        name="deli"
-                        id="ygn"
-                        checked={deli === "Yangon"}
-                        onChange={() => setDeli("Yangon")}
-                      />{" "}
-                      <label htmlFor="ygn" className="cursor-pointer">
-                        Dentro da cidade
-                      </label>
-                    </div>
-                    <span>€ 2.00</span>
                   </div>
 
                   <div className="flex justify-between">
@@ -208,14 +192,14 @@ const ShoppingCart = () => {
                         Outras cidades
                       </label>
                     </div>
-                    <span>€ 7.00</span>
+                    <span>MZN 700.00</span>
                   </div>
                 </div>
               </div>
 
               <div className="flex justify-between py-3">
                 <span>Total</span>
-                <span>€ {roundDecimal(subtotal + deliFee)}</span>
+                <span>MZN {roundDecimal(subtotal + deliFee)}</span>
               </div>
 
               <Button
