@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Vestido Floral",
+    "price": 2500,
+    "description": "Vestido leve e elegante para qualquer ocasião.",
+    "category": "women",
+    "image1": "/products/women1.jpg",
+    "image2": "/products/women2.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Camisa Casual",
+    "price": 1800,
+    "description": "Camisa confortável para uso diário.",
+    "category": "men",
+    "image1": "/products/men1.jpg",
+    "image2": "/products/men2.jpg"
+  }
+]
