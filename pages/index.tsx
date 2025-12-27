@@ -13,7 +13,6 @@ import TestiSlider from "../components/TestiSlider/TestiSlider";
 import { apiProductsType, itemType } from "../context/cart/cart-types";
 import LinkButton from "../components/Buttons/LinkButton";
 
-// /bg-img/ourshop.png
 import ourShop from "../public/bg-img/ourshop.png";
 
 type Props = {
@@ -32,12 +31,15 @@ const Home: React.FC<Props> = ({ products }) => {
         const res = await axios.get("/api/products");
 
         const fetchedProducts = res.data.data.map((product: apiProductsType) => ({
-          ...product,
+          id: product.id,
+          name: product.name,
+          price: product.price,
           img1: product.image1,
           img2: product.image2,
+          qty: product.qty,
         }));
 
-        setCurrentItems((products) => [...products, ...fetchedProducts]);
+        setCurrentItems((prev) => [...prev, ...fetchedProducts]);
       } catch (error) {
         console.error("CLIENT FETCH ERROR:", error);
       } finally {
@@ -46,9 +48,9 @@ const Home: React.FC<Props> = ({ products }) => {
     };
 
     fetchData();
-  }, [isFetching, currentItems.length]);
+  }, [isFetching]);
 
-  const handleSeemore = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSeemore = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setIsFetching(true);
   };
@@ -77,28 +79,16 @@ const Home: React.FC<Props> = ({ products }) => {
             </div>
 
             <div className="w-full">
-              <OverlayContainer
-                imgSrc="/bg-img/banner_minipage2.jpg"
-                imgAlt="Coleção Feminina"
-              >
-                <LinkButton
-                  href="/product-category/women"
-                  extraClass="absolute bottom-10-per z-20"
-                >
+              <OverlayContainer imgSrc="/bg-img/banner_minipage2.jpg" imgAlt="Coleção Feminina">
+                <LinkButton href="/product-category/women" extraClass="absolute bottom-10-per z-20">
                   Coleção Feminina
                 </LinkButton>
               </OverlayContainer>
             </div>
 
             <div className="w-full">
-              <OverlayContainer
-                imgSrc="/bg-img/banner_minipage3.jpg"
-                imgAlt="Coleção Masculina"
-              >
-                <LinkButton
-                  href="/product-category/men"
-                  extraClass="absolute bottom-10-per z-20"
-                >
+              <OverlayContainer imgSrc="/bg-img/banner_minipage3.jpg" imgAlt="Coleção Masculina">
+                <LinkButton href="/product-category/men" extraClass="absolute bottom-10-per z-20">
                   Coleção Masculina
                 </LinkButton>
               </OverlayContainer>
@@ -117,7 +107,7 @@ const Home: React.FC<Props> = ({ products }) => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 lg:gap-x-12 gap-y-6 mb-10 app-x-padding">
             {currentItems.slice(1, 5).map((item) => (
-              <Card key={item.id} item={{ ...item, price: item.price, currency: "MZN" }} />
+              <Card key={item.id} item={item} />
             ))}
           </div>
         </section>
@@ -134,15 +124,12 @@ const Home: React.FC<Props> = ({ products }) => {
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-10 sm:gap-y-6 mb-10">
             {currentItems.map((item) => (
-              <Card key={item.id} item={{ ...item, price: item.price, currency: "MZN" }} />
+              <Card key={item.id} item={item} />
             ))}
           </div>
 
           <div className="flex justify-center">
-            <Button
-              value={!isFetching ? "Ver Mais" : "A Carregar..."}
-              onClick={handleSeemore}
-            />
+            <Button value={!isFetching ? "Ver Mais" : "A Carregar..."} onClick={handleSeemore} />
           </div>
         </section>
 
@@ -150,9 +137,7 @@ const Home: React.FC<Props> = ({ products }) => {
 
         <section className="app-max-width mt-20 mb-24 flex flex-col items-center text-center">
           <div className="textBox w-full md:w-3/4 lg:w-2/4 mb-8">
-            <h2 className="text-3xl md:text-4xl font-semibold mb-6">
-              A Nossa Loja Online
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-semibold mb-6">A Nossa Loja Online</h2>
 
             <p className="mb-4">
               A BFashion é uma loja 100% online, criada para lhe oferecer uma experiência
@@ -171,11 +156,7 @@ const Home: React.FC<Props> = ({ products }) => {
           </div>
 
           <div className="w-full app-x-padding flex justify-center mt-6">
-            <Image
-              src={ourShop}
-              alt="Loja online BFashion"
-              className="rounded-xl shadow-md"
-            />
+            <Image src={ourShop} alt="Loja online BFashion" className="rounded-xl shadow-md" />
           </div>
         </section>
       </main>
@@ -200,17 +181,12 @@ export const getStaticProps: GetStaticProps = async () => {
     }));
 
     return {
-      props: {
-        products,
-      },
+      props: { products },
     };
   } catch (error) {
     console.error("API ERROR:", error);
-
     return {
-      props: {
-        products: [],
-      },
+      props: { products: [] },
     };
   }
 };
