@@ -180,7 +180,6 @@ const ShoppingCart = () => {
                   name="name"
                   type="text"
                   value={name}
-                  onChange={handleInputChange(setName)}
                   required
                   extraClass="w-full mt-1 mb-2"
                   border="border-2 border-gray400"
@@ -194,7 +193,6 @@ const ShoppingCart = () => {
                   type="email"
                   value={email}
                   readOnly={!!auth.user}
-                  onChange={handleInputChange(setEmail)}
                   required
                   extraClass={`w-full mt-1 mb-2 ${auth.user ? "bg-gray100 cursor-not-allowed" : ""}`}
                   border="border-2 border-gray400"
@@ -208,7 +206,6 @@ const ShoppingCart = () => {
                     name="password"
                     type="password"
                     value={password}
-                    onChange={handleInputChange(setPassword)}
                     required
                     extraClass="w-full mt-1 mb-2"
                     border="border-2 border-gray400"
@@ -222,7 +219,6 @@ const ShoppingCart = () => {
                   name="phone"
                   type="text"
                   value={phone}
-                  onChange={handleInputChange(setPhone)}
                   required
                   extraClass="w-full mt-1 mb-2"
                   border="border-2 border-gray400"
