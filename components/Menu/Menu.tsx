@@ -4,13 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 import MenuIcon from "../../public/icons/MenuIcon";
-import AuthForm from "../Auth/AuthForm";
 import WhistlistIcon from "../../public/icons/WhistlistIcon";
-import UserIcon from "../../public/icons/UserIcon";
 import SearchIcon from "../../public/icons/SearchIcon";
-import DownArrow from "../../public/icons/DownArrow";
 import InstagramLogo from "../../public/icons/InstagramLogo";
 import FacebookLogo from "../../public/icons/FacebookLogo";
+import CartItem from "../CartItem/CartItem";
+
 import { useWishlist } from "../../context/wishlist/WishlistProvider";
 
 export default function Menu() {
@@ -31,7 +30,6 @@ export default function Menu() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setOpen(false);
-    // Redirect to search page
     window.location.href = `/search?q=${searchValue}`;
   };
 
@@ -75,10 +73,7 @@ export default function Menu() {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <div
-                style={{ height: "100vh" }}
-                className="relative opacity-95 overflow-y-auto inline-block h-screen w-full max-w-md text-left transform bg-white shadow-xl"
-              >
+              <div className="relative opacity-95 overflow-y-auto h-screen w-full max-w-md bg-white shadow-xl">
                 {/* Header */}
                 <div className="flex justify-between items-center p-6 pb-0">
                   <Link href="/">
@@ -93,7 +88,7 @@ export default function Menu() {
                   </Link>
                   <button
                     type="button"
-                    className="outline-none focus:outline-none text-3xl sm:text-2xl"
+                    className="outline-none text-3xl"
                     onClick={closeModal}
                   >
                     &#10005;
@@ -102,9 +97,9 @@ export default function Menu() {
 
                 {/* Search */}
                 <div className="mb-10">
-                  <div className="itemContainer px-6 w-full flex flex-col justify-around items-center">
+                  <div className="px-6 flex flex-col">
                     <form
-                      className="flex w-full justify-between items-center mt-5 mb-5 border-gray300 border-b-2"
+                      className="flex w-full items-center mt-5 mb-5 border-b-2 border-gray300"
                       onSubmit={handleSubmit}
                     >
                       <SearchIcon extraClass="text-gray300 w-6 h-6" />
@@ -116,68 +111,44 @@ export default function Menu() {
                       />
                     </form>
 
-                    {/* Menu links */}
+                    {/* Navigation Links */}
                     <Link href="/coming-soon">
-                      <a
-                        className="w-full text-xl hover:bg-gray100 text-left py-2"
-                        onClick={closeModal}
-                      >
+                      <a className="menu-link" onClick={closeModal}>
                         Homens
                       </a>
                     </Link>
+
                     <Link href="/product-category/women">
-                      <a
-                        className="w-full text-xl hover:bg-gray100 text-left py-2"
-                        onClick={closeModal}
-                      >
+                      <a className="menu-link" onClick={closeModal}>
                         Mulheres
                       </a>
                     </Link>
+
                     <Link href="/product-category/bags">
-                      <a
-                        className="w-full text-xl hover:bg-gray100 text-left py-2"
-                        onClick={closeModal}
-                      >
+                      <a className="menu-link" onClick={closeModal}>
                         Bolsas
                       </a>
                     </Link>
+
                     <Link href="/sobre">
-                      <a
-                        className="w-full text-xl hover:bg-gray100 text-left py-2"
-                        onClick={closeModal}
-                      >
+                      <a className="menu-link" onClick={closeModal}>
                         Sobre
                       </a>
                     </Link>
-                    {/* <Link href="/contact">
-                      <a
-                        className="w-full text-xl hover:bg-gray100 text-left py-2"
-                        onClick={closeModal}
-                      >
-                        Contactos
-                      </a>
-                    </Link> */}
 
-                    <hr className="border border-gray300 w-full mt-2" />
-
-                    {/* Auth/Profile */}
-                    {/* <div className="w-full text-xl py-2 my-3 flex justify-between">
-                      <AuthForm extraClass="flex justify-between w-full">
-                        <span>Iniciar Sessão / Perfil</span>
-                        <UserIcon />
-                      </AuthForm>
-                    </div> */}
-
-                    <hr className="border border-gray300 w-full" />
+                    <hr className="border-gray300 my-3" />
 
                     {/* Wishlist */}
                     <Link href="/wishlist">
-                      <a className="text-xl py-2 my-3 w-full flex justify-between">
+                      <a
+                        className="flex justify-between items-center text-xl py-2"
+                        onClick={closeModal}
+                      >
                         <span>Lista de desejos</span>
                         <div className="relative">
                           <WhistlistIcon />
                           {noOfWishlist > 0 && (
-                            <span className="absolute text-xs -top-0 -left-7 bg-gray500 text-gray100 py-1 px-2 rounded-full">
+                            <span className="absolute -top-2 -left-6 bg-gray500 text-gray100 text-xs px-2 py-1 rounded-full">
                               {noOfWishlist}
                             </span>
                           )}
@@ -185,21 +156,29 @@ export default function Menu() {
                       </a>
                     </Link>
 
-                    <hr className="border border-gray300 w-full" />
+                    <hr className="border-gray300 my-3" />
 
-                    {/* Social Icons */}
-                    <div className="flex my-10 w-2/5 space-x-6 justify-center">
+                    {/* 🛒 Cart */}
+                    <div className="flex justify-between items-center py-3">
+                      <span className="text-xl">Clique para ver carrinho</span>
+                      <CartItem />
+                    </div>
+
+                    <hr className="border-gray300 my-3" />
+
+                    {/* Social */}
+                    <div className="flex justify-center space-x-6 mt-6">
                       <a
                         href="https://www.facebook.com/bfashion"
-                        className="text-gray400 w-10 h-10 py-1 px-auto flex justify-center rounded-md active:bg-gray300"
                         aria-label="Facebook BFashion"
+                        className="text-gray400"
                       >
                         <FacebookLogo extraClass="h-8" />
                       </a>
                       <a
                         href="https://www.instagram.com/bfashion_storee/"
-                        className="text-gray400 w-10 h-10 py-1 px-auto flex justify-center rounded-md active:bg-gray300"
                         aria-label="Instagram BFashion"
+                        className="text-gray400"
                       >
                         <InstagramLogo extraClass="h-8" />
                       </a>
