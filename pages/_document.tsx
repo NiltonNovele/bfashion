@@ -1,13 +1,13 @@
 import { Html, Head, Main, NextScript } from "next/document";
 
-const title = "Haru Fashion";
+const title = "BFashion";
 const desc =
-  "Haru Fashion e-commerce developed with Next.JS. Coded with 🖤 by Sat Naing (satnaing.dev).";
-const keywords = "Haru Fashion, Online Shop, E-commerce, Sat Naing, NextJS";
+  "BFashion";
+const keywords = "BFashion, Loja Online, E-commerce, Moda";
 
 export default function Document() {
   return (
-    <Html>
+    <Html lang="pt">
       <Head>
         <meta content="IE=edge" httpEquiv="X-UA-Compatible" />
 
@@ -19,36 +19,36 @@ export default function Document() {
         <meta content="#282828" name="msapplication-TileColor" />
 
         <link
-          href="/favicons/apple-touch-icon.png"
+          href="/logo.jpg"
           rel="apple-touch-icon"
           sizes="180x180"
         />
         <link
-          href="/favicons/favicon-32x32.png"
+          href="/logo.jpg"
           rel="icon"
           sizes="32x32"
           type="image/png"
         />
         <link
-          href="/favicons/favicon-16x16.png"
+          href="/logo.jpg"
           rel="icon"
           sizes="16x16"
           type="image/png"
         />
-        <link href="/favicons/favicon.ico" rel="shortcut icon" />
-        <link href="/favicons/site.webmanifest" rel="manifest" />
+        <link href="/logo.jpg" rel="shortcut icon" />
+        <link href="/logo.jpg" rel="manifest" />
 
-        <meta property="og:url" content="https://haru-fashion.vercel.app" />
-        <link rel="canonical" href="https://haru-fashion.vercel.app" />
-        <meta property="og:site_name" content="Haru Fashion" />
+        <meta property="og:url" content="https://bfashion.sale" />
+        <link rel="canonical" href="https://bfashion.sale" />
+        <meta property="og:site_name" content="BFashion" />
         <meta property="og:description" content={desc} key="og_description" />
         <meta property="og:title" content={title} key="og_title" />
         <meta
           property="og:image"
-          content="https://haru-fashion.vercel.app/og.png"
+          content="/logo.jpg"
         />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@satnaing.dev" />
+        <meta name="twitter:site" content="@bfashion" />
         <meta name="twitter:title" content={title} key="twitter_title" />
         <meta
           name="twitter:description"
@@ -57,7 +57,7 @@ export default function Document() {
         />
         <meta
           name="twitter:image"
-          content="https://haru-fashion.vercel.app/og.png"
+          content="/logo.jpg"
         />
 
         <meta name="apple-mobile-web-app-capable" content="yes" />
