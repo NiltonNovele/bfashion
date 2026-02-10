@@ -5,7 +5,7 @@ import {
   Building2,
   HelpCircle,
   Store,
-  Contact
+  Contact,
 } from "lucide-react";
 import Button from "../Buttons/Button";
 import Input from "../Input/Input";
@@ -25,9 +25,9 @@ export default function Footer() {
               Empresa
             </h3>
             <div className={styles.column}>
-              <a href="/sobre">Sobre Nós</a>
-              <a href="/sobre">Contacte-Nos</a>
-              <a href="#">Carreiras</a>
+              <Link href="/sobre">Sobre Nós</Link>
+              <Link href="/sobre">Contacte-Nos</Link>
+              <a href="#">Carreiras</a> {/* External? Keep as <a> */}
             </div>
           </div>
 
@@ -38,10 +38,10 @@ export default function Footer() {
               Ajuda
             </h3>
             <div className={styles.column}>
-              <a href="/coming-soon">Rastreamento de Pedido</a>
-              <a href="/coming-soon">Perguntas Frequentes</a>
-              <a href="/coming-soon">Política de Privacidade</a>
-              <a href="/coming-soon">Termos & Condições</a>
+              <Link href="/coming-soon">Rastreamento de Pedido</Link>
+              <Link href="/coming-soon">Perguntas Frequentes</Link>
+              <Link href="/coming-soon">Política de Privacidade</Link>
+              <Link href="/coming-soon">Termos & Condições</Link>
             </div>
           </div>
 
@@ -66,11 +66,7 @@ export default function Footer() {
             </h3>
             <div className={styles.column}>
               <span>Maputo, Moçambique</span>
-
-              <span className="flex items-center gap-2">
-                +258 87 552 9325
-              </span>
-
+              <span className="flex items-center gap-2">+258 87 552 9325</span>
               <span>
                 Aberto Todos os Dias <br /> Loja Online
               </span>
