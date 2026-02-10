@@ -105,7 +105,7 @@ const ShoppingCart = () => {
                   value={name}
                   extraClass="w-full mt-2"
                   border="border-2 border-gray400"
-                  onChange={handleInputChange(setName)}
+                  // onChange={handleInputChange(setName)}
                 />
               </div>
 
@@ -117,7 +117,7 @@ const ShoppingCart = () => {
                   value={email}
                   extraClass="w-full mt-2"
                   border="border-2 border-gray400"
-                  onChange={handleInputChange(setEmail)}
+                  // onChange={handleInputChange(setEmail)}
                 />
               </div>
 
@@ -129,7 +129,7 @@ const ShoppingCart = () => {
                   value={phone}
                   extraClass="w-full mt-2"
                   border="border-2 border-gray400"
-                  onChange={handleInputChange(setPhone)}
+                  // onChange={handleInputChange(setPhone)}
                 />
               </div>
 
