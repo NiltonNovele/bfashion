@@ -140,6 +140,13 @@ export default function Menu() {
                       />
                     </form>
 
+                    
+                    <Link href="/">
+                      <a className="menu-link" onClick={closeModal}>
+                        Início
+                      </a>
+                    </Link>
+
                     <Link href="/product-category/women">
                       <a className="menu-link" onClick={closeModal}>
                         Mulheres

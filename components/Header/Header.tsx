@@ -118,6 +118,11 @@ const Header: React.FC<Props> = ({ title }) => {
             {/* Left Menu */}
             <ul className={`flex-0 lg:flex-1 flex ${styles.leftMenu}`}>
               <li>
+                <Link href="/">
+                  <a>Início</a>
+                </Link>
+              </li>
+              <li>
                 <Link href="/product-category/women">
                   <a>Mulheres</a>
                 </Link>
