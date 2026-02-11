@@ -35,56 +35,60 @@ const ShoppingCart = () => {
 
   const totalNumber = subtotalNumber + deliFee;
 
+  // ---------- FIXED INPUT HANDLER ----------
   const handleInputChange =
     (setter: (val: string) => void) =>
-    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-      setter(e.target.value);
+    (e: ChangeEvent<any>) => {
+      // cast target to HTMLInputElement | HTMLTextAreaElement
+      const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+      setter(target.value);
+    };
 
   const canProceed =
     name !== "" && email !== "" && phone !== "" && address !== "";
 
   const handleCheckout = async () => {
-  if (!canProceed) return;
+    if (!canProceed) return;
 
-  try {
-    const res = await fetch("https://api.bfashion.sale/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        total: Math.round(totalNumber),
-      }),
-    });
+    try {
+      const res = await fetch("https://api.bfashion.sale/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          total: Math.round(totalNumber),
+        }),
+      });
 
-    const text = await res.text();
+      const text = await res.text();
 
-    if (!res.ok) {
-      console.error("Server error:", text);
-      return;
+      if (!res.ok) {
+        console.error("Server error:", text);
+        return;
+      }
+
+      const data = JSON.parse(text);
+
+      /* ---------- SAVE ORDER LOCALLY ---------- */
+      localStorage.setItem(
+        "bfashion_checkout",
+        JSON.stringify({
+          name,
+          email,
+          phone,
+          address,
+          deliveryType: deli,
+          total: totalNumber,
+          cart,
+        })
+      );
+
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url;
+      }
+    } catch (err) {
+      console.error("Checkout failed:", err);
     }
-
-    const data = JSON.parse(text);
-
-    /* ---------- SAVE ORDER LOCALLY ---------- */
-    localStorage.setItem(
-      "bfashion_checkout",
-      JSON.stringify({
-        name,
-        email,
-        phone,
-        address,
-        deliveryType: deli,
-        total: totalNumber,
-        cart,
-      })
-    );
-
-    if (data.checkout_url) {
-      window.location.href = data.checkout_url;
-    }
-  } catch (err) {
-    console.error("Checkout failed:", err);
-  }
-};
+  };
 
   return (
     <div>
@@ -105,7 +109,7 @@ const ShoppingCart = () => {
                   value={name}
                   extraClass="w-full mt-2"
                   border="border-2 border-gray400"
-                   onChange={handleInputChange(setName)}
+                  onChange={handleInputChange(setName)}
                 />
               </div>
 
@@ -129,7 +133,7 @@ const ShoppingCart = () => {
                   value={phone}
                   extraClass="w-full mt-2"
                   border="border-2 border-gray400"
-                   onChange={handleInputChange(setPhone)}
+                  onChange={handleInputChange(setPhone)}
                 />
               </div>
 
