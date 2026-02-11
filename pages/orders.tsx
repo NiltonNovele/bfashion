@@ -67,7 +67,7 @@ export default function Orders() {
   };
 
   const loadOrders = async () => {
-    const res = await fetch("http://localhost:5009/api/orders");
+    const res = await fetch("https://api.bfashion.sale/api/orders");
     const data = await res.json();
     setOrders(data);
     setLoading(false);
@@ -78,7 +78,7 @@ export default function Orders() {
   }, [authenticated]);
 
   const updateStatus = async (id: string, status: string) => {
-    await fetch(`http://localhost:5009/api/orders/${id}`, {
+    await fetch(`https://api.bfashion.sale/api/orders/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),

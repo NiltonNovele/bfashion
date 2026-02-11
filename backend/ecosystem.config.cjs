@@ -1,12 +1,12 @@
 module.exports = {
         apps: [
            {
-                name: "backend",
+                name: "backend-bfashion",
                 script: "./index.js",
-                cwd: "/home/bac/backend",
+                cwd: "/home/bfashion/backend",
                 env: {
                         NODE_ENV: "production",
-                        PORT: 5004,
+                        PORT: 5009,
                 }
           }
         ]

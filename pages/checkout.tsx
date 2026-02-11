@@ -35,56 +35,57 @@ const ShoppingCart = () => {
 
   const totalNumber = subtotalNumber + deliFee;
 
+  // ✅ FIXED HERE (only HTMLInputElement)
   const handleInputChange =
     (setter: (val: string) => void) =>
-    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    (e: ChangeEvent<HTMLInputElement>) =>
       setter(e.target.value);
 
   const canProceed =
     name !== "" && email !== "" && phone !== "" && address !== "";
 
   const handleCheckout = async () => {
-  if (!canProceed) return;
+    if (!canProceed) return;
 
-  try {
-    const res = await fetch("http://localhost:5009/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        total: Math.round(totalNumber),
-      }),
-    });
+    try {
+      const res = await fetch("https://api.bfashion.sale/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          total: Math.round(totalNumber),
+        }),
+      });
 
-    const text = await res.text();
+      const text = await res.text();
 
-    if (!res.ok) {
-      console.error("Server error:", text);
-      return;
+      if (!res.ok) {
+        console.error("Server error:", text);
+        return;
+      }
+
+      const data = JSON.parse(text);
+
+      /* ---------- SAVE ORDER LOCALLY ---------- */
+      localStorage.setItem(
+        "bfashion_checkout",
+        JSON.stringify({
+          name,
+          email,
+          phone,
+          address,
+          deliveryType: deli,
+          total: totalNumber,
+          cart,
+        })
+      );
+
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url;
+      }
+    } catch (err) {
+      console.error("Checkout failed:", err);
     }
-
-    const data = JSON.parse(text);
-
-    /* ---------- SAVE ORDER LOCALLY ---------- */
-    localStorage.setItem(
-      "bfashion_checkout",
-      JSON.stringify({
-        name,
-        email,
-        phone,
-        address,
-        deliveryType: deli,
-        total: totalNumber,
-        cart,
-      })
-    );
-
-    if (data.checkout_url) {
-      window.location.href = data.checkout_url;
-    }
-  } catch (err) {
-    console.error("Checkout failed:", err);
-  }
-};
+  };
 
   return (
     <div>
@@ -105,7 +106,7 @@ const ShoppingCart = () => {
                   value={name}
                   extraClass="w-full mt-2"
                   border="border-2 border-gray400"
-                  // onChange={handleInputChange(setName)}
+                  onChange={handleInputChange(setName)}
                 />
               </div>
 
@@ -117,7 +118,7 @@ const ShoppingCart = () => {
                   value={email}
                   extraClass="w-full mt-2"
                   border="border-2 border-gray400"
-                  // onChange={handleInputChange(setEmail)}
+                  onChange={handleInputChange(setEmail)}
                 />
               </div>
 
@@ -129,7 +130,7 @@ const ShoppingCart = () => {
                   value={phone}
                   extraClass="w-full mt-2"
                   border="border-2 border-gray400"
-                  // onChange={handleInputChange(setPhone)}
+                  onChange={handleInputChange(setPhone)}
                 />
               </div>
 
@@ -139,7 +140,9 @@ const ShoppingCart = () => {
                   className="w-full mt-2 border-2 border-gray400 p-4"
                   rows={4}
                   value={address}
-                  onChange={handleInputChange(setAddress)}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                    setAddress(e.target.value)
+                  }
                 />
               </div>
             </div>

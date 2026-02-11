@@ -13,7 +13,7 @@ export default function Success() {
 
   const orderData = JSON.parse(saved);
 
-  fetch("http://localhost:5009/api/orders", {
+  fetch("https://api.bfashion.sale/api/orders", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(orderData),
@@ -48,7 +48,7 @@ export default function Success() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/">
               <Button
-                value="Voltar à página inicial"
+                value="Finalizar"
                 size="lg"
                 extraClass="w-full sm:w-auto"
               />
