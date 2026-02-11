@@ -1,83 +1,106 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 import TopNav from "./TopNav";
 import WhistlistIcon from "../../public/icons/WhistlistIcon";
 import UserIcon from "../../public/icons/UserIcon";
-import AuthForm from "../Auth/AuthForm";
 import SearchForm from "../SearchForm/SearchForm";
 import CartItem from "../CartItem/CartItem";
 import Menu from "../Menu/Menu";
 import AppHeader from "./AppHeader";
 import { useWishlist } from "../../context/wishlist/WishlistProvider";
 
+import { ChevronDown } from "lucide-react";
 import styles from "./Header.module.css";
 
-type Props = {
-  title?: string;
-};
+type Props = { title?: string };
 
 const Header: React.FC<Props> = ({ title }) => {
   const { wishlist } = useWishlist();
   const [animate, setAnimate] = useState("");
-  const [scrolled, setScrolled] = useState<boolean>(false);
-  const [didMount, setDidMount] = useState<boolean>(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [didMount, setDidMount] = useState(false);
 
-  // Número de itens na wishlist
-  let noOfWishlist = wishlist.length;
+  const [adminOpen, setAdminOpen] = useState(false);
+  const [pinVerified, setPinVerified] = useState(false);
+  const [pinInput, setPinInput] = useState("");
+  const adminRef = useRef<HTMLLIElement>(null);
 
-  // Animação do número da wishlist
+  const noOfWishlist = wishlist.length;
+
+  // Wishlist animation
   const handleAnimate = useCallback(() => {
     if (noOfWishlist === 0) return;
     setAnimate("animate__animated animate__headShake");
-  }, [noOfWishlist, setAnimate]);
+  }, [noOfWishlist]);
 
-  // Atualiza animação quando a wishlist muda
   useEffect(() => {
     handleAnimate();
-    setTimeout(() => {
-      setAnimate("");
-    }, 1000);
+    const timer = setTimeout(() => setAnimate(""), 1000);
+    return () => clearTimeout(timer);
   }, [handleAnimate]);
 
-  // Detecta scroll para mudar fundo do menu
+  // Scroll and click outside
   const handleScroll = useCallback(() => {
-    const offset = window.scrollY;
-    if (offset > 30) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  }, [setScrolled]);
+    setScrolled(window.scrollY > 30);
+  }, []);
 
   useEffect(() => {
     setDidMount(true);
     window.addEventListener("scroll", handleScroll);
-    return () => setDidMount(false);
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (adminRef.current && !adminRef.current.contains(e.target as Node)) {
+        setAdminOpen(false);
+        setPinInput("");
+        setPinVerified(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      setDidMount(false);
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [handleScroll]);
 
-  if (!didMount) {
-    return null;
-  }
+  if (!didMount) return null;
+
+  const handleAdminIconClick = () => {
+    if (!adminOpen) {
+      setAdminOpen(true);
+      setPinVerified(false);
+      setPinInput("");
+    } else {
+      setAdminOpen(false);
+    }
+  };
+
+  const handlePinSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pinInput === "1234") {
+      setPinVerified(true);
+    } else {
+      alert("PIN inválido!");
+      setPinVerified(false);
+      setPinInput("");
+    }
+  };
 
   return (
     <>
-      {/* Cabeçalho da página */}
       <AppHeader title={title || "BFashion"} />
-
-      {/* Botão de salto para o conteúdo principal */}
-      <a
+      {/* <a
         href="#main-content"
         className="whitespace-nowrap absolute z-50 left-4 opacity-90 rounded-md bg-white px-4 py-3 transform -translate-y-40 focus:translate-y-0 transition-all duration-300"
       >
         Saltar para o conteúdo principal
-      </a>
+      </a> */}
 
-      {/* Top Navigation */}
       <TopNav />
 
-      {/* Navegação principal */}
       <nav
         className={`${
           scrolled ? "bg-white sticky top-0 shadow-md z-50" : "bg-transparent"
@@ -87,20 +110,15 @@ const Header: React.FC<Props> = ({ title }) => {
           <div
             className={`flex justify-between align-baseline app-x-padding ${styles.mainMenu}`}
           >
-            {/* Menu Hamburger Mobile */}
+            {/* Mobile Menu */}
             <div className="flex-1 lg:flex-0 lg:hidden">
               <Menu />
             </div>
 
-            {/* Menu Esquerdo */}
+            {/* Left Menu */}
             <ul className={`flex-0 lg:flex-1 flex ${styles.leftMenu}`}>
-              {/* <li>
-                <Link href={`/coming-soon`}>
-                  <a>Homens</a>
-                </Link>
-              </li> */}
               <li>
-                <Link href={`/product-category/women`}>
+                <Link href="/product-category/women">
                   <a>Mulheres</a>
                 </Link>
               </li>
@@ -134,16 +152,13 @@ const Header: React.FC<Props> = ({ title }) => {
               </div>
             </div>
 
-            {/* Menu Direito */}
-            <ul className={`flex-1 flex justify-end ${styles.rightMenu}`}>
+            {/* Right Menu */}
+            <ul className={`flex-1 flex justify-end ${styles.rightMenu} relative`}>
               <li>
                 <SearchForm />
               </li>
-              {/* <li>
-                <AuthForm>
-                  <UserIcon />
-                </AuthForm>
-              </li> */}
+
+              {/* Wishlist */}
               <li>
                 <Link href="/wishlist" passHref>
                   <button
@@ -162,7 +177,75 @@ const Header: React.FC<Props> = ({ title }) => {
                   </button>
                 </Link>
               </li>
-              <li>
+
+              {/* Desktop Admin */}
+              <li className="hidden lg:flex relative ml-4" ref={adminRef}>
+                <button
+                  onClick={handleAdminIconClick}
+                  className="flex items-center gap-1 border border-gray-200 px-3 py-1 rounded hover:bg-gray-100 transition"
+                >
+                  <UserIcon />
+                  <ChevronDown size={14} />
+                </button>
+
+                {/* PIN input */}
+                {adminOpen && !pinVerified && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg p-3 z-50 animate-fade-in">
+                    <form onSubmit={handlePinSubmit} className="flex flex-col gap-2">
+                      <input
+                        type="password"
+                        value={pinInput}
+                        onChange={(e) => setPinInput(e.target.value)}
+                        placeholder="Introduza o PIN"
+                        className="border border-gray-300 px-2 py-1 rounded text-sm focus:outline-none focus:ring focus:ring-gray-300"
+                      />
+                      <button
+                        type="submit"
+                        className="bg-gray500 text-white text-sm px-2 py-1 rounded hover:bg-gray600 transition"
+                      >
+                        OK
+                      </button>
+                    </form>
+                  </div>
+                )}
+
+                {/* Admin options */}
+                {adminOpen && pinVerified && (
+                  <ul className="absolute right-0 mt-2 w-52 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-fade-in">
+                    <li>
+                      <Link href="/orders">
+                        <a className="block px-4 py-2 text-sm hover:bg-gray-100 transition">
+                          Ver Encomendas
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/coming-soon">
+                        <a className="block px-4 py-2 text-sm hover:bg-gray-100 transition">
+                          Gerir Produtos
+                        </a>
+                      </Link>
+                    </li>
+                    {/* <li>
+                      <Link href="/admin/categories">
+                        <a className="block px-4 py-2 text-sm hover:bg-gray-100 transition">
+                          Gerir Categorias
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/users">
+                        <a className="block px-4 py-2 text-sm hover:bg-gray-100 transition">
+                          Gerir Utilizadores
+                        </a>
+                      </Link>
+                    </li> */}
+                  </ul>
+                )}
+              </li>
+
+              {/* Mobile CartItem instead of Admin */}
+              <li className="lg:hidden ml-4">
                 <CartItem />
               </li>
             </ul>

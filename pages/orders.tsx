@@ -37,33 +37,10 @@ const statusStyles: Record<string, string> = {
   Completo: "bg-emerald-50 text-emerald-700 border-emerald-200",
 };
 
-/* ---------------- HARD AUTH ---------------- */
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "bfashion123";
-
 export default function Orders() {
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState("Todos");
-
-  const [authenticated, setAuthenticated] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const auth = sessionStorage.getItem("bfashion_admin_auth");
-    if (auth === "true") setAuthenticated(true);
-  }, []);
-
-  const login = () => {
-    if (username === ADMIN_USER && password === ADMIN_PASS) {
-      sessionStorage.setItem("bfashion_admin_auth", "true");
-      setAuthenticated(true);
-    } else {
-      setError("Credenciais inválidas");
-    }
-  };
 
   const loadOrders = async () => {
     const res = await fetch("https://api.bfashion.sale/api/orders");
@@ -73,8 +50,8 @@ export default function Orders() {
   };
 
   useEffect(() => {
-    if (authenticated) loadOrders();
-  }, [authenticated]);
+    loadOrders();
+  }, []);
 
   const updateStatus = async (id: string, status: string) => {
     await fetch(`https://api.bfashion.sale/api/orders/${id}`, {
@@ -90,45 +67,6 @@ export default function Orders() {
     filterStatus === "Todos"
       ? orders
       : orders.filter((o) => o.status === filterStatus);
-
-  /* ---------------- LOGIN SCREEN ---------------- */
-  if (!authenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="bg-white border border-gray-200 rounded-xl p-8 w-[320px] shadow-sm">
-          <h2 className="text-xl font-semibold mb-6 text-center">
-            Admin BFashion
-          </h2>
-
-          <input
-            placeholder="Utilizador"
-            className="border border-gray-200 p-2 rounded w-full mb-3 text-sm"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-
-          <input
-            type="password"
-            placeholder="Palavra-passe"
-            className="border border-gray-200 p-2 rounded w-full mb-3 text-sm"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          {error && <p className="text-red-500 text-xs mb-2">{error}</p>}
-
-          <button
-            onClick={login}
-            className="bg-gray500 text-white w-full py-2 rounded text-sm"
-          >
-            Entrar
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  /* ---------------- ORDERS PAGE ---------------- */
 
   // ---------- STATUS CARD DATA ----------
   const statusCounts: Record<string, number> = {};
@@ -146,7 +84,9 @@ export default function Orders() {
           <h1 className="text-2xl font-semibold">Gestão de Encomendas</h1>
 
           <div className="flex items-center gap-4">
-            <div className="text-sm text-gray-500">{filteredOrders.length} encomendas</div>
+            <div className="text-sm text-gray-500">
+              {filteredOrders.length} encomendas
+            </div>
 
             <div className="flex items-center gap-2 bg-white border border-gray-200 px-3 py-2 rounded-lg">
               <Filter size={16} />
@@ -171,8 +111,12 @@ export default function Orders() {
               key={status}
               className={`flex flex-col p-4 rounded-xl border ${statusStyles[status]} bg-opacity-20`}
             >
-              <span className="text-xs font-semibold text-gray-500">{status}</span>
-              <span className="text-2xl font-bold mt-1">{statusCounts[status]}</span>
+              <span className="text-xs font-semibold text-gray-500">
+                {status}
+              </span>
+              <span className="text-2xl font-bold mt-1">
+                {statusCounts[status]}
+              </span>
             </div>
           ))}
         </div>
@@ -193,7 +137,9 @@ export default function Orders() {
                     <Package size={18} className="text-gray-400" />
                     <div>
                       <p className="text-sm font-medium">Encomenda</p>
-                      <p className="text-xs text-gray-500 truncate">{order._id}</p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {order._id}
+                      </p>
                     </div>
                   </div>
 
