@@ -12,50 +12,33 @@ type OrderItem = {
   img1?: string;
 };
 
-type StoredCheckoutData = {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  deliveryType: string;
-  total: number;
-  cart: OrderItem[];
-};
-
 type OrderData = {
-  customerName: string;
-  customerEmail: string;
-  customerPhone: string;
-  address: string;
-  total: number;
-  items: OrderItem[];
+  name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  deliveryType?: string;
+  total?: number;
+  cart?: OrderItem[];
 };
 
 export default function Success() {
   const [order, setOrder] = useState<OrderData | null>(null);
+  const [items, setItems] = useState<OrderItem[]>([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("bfashion_checkout");
     if (!saved) return;
 
-    const parsed: StoredCheckoutData = JSON.parse(saved);
+    const parsed: OrderData = JSON.parse(saved);
 
-    /* ---------- MAP CHECKOUT DATA TO RECEIPT STRUCTURE ---------- */
-    const mappedOrder: OrderData = {
-      customerName: parsed.name,
-      customerEmail: parsed.email,
-      customerPhone: parsed.phone,
-      address: parsed.address,
-      total: parsed.total,
-      items: parsed.cart || [],
-    };
-
-    setOrder(mappedOrder);
+    setOrder(parsed);
+    setItems(parsed.cart || []);
 
     fetch("https://api.bfashion.sale/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(mappedOrder),
+      body: JSON.stringify(parsed),
     }).catch(() => {});
 
     localStorage.removeItem("bfashion_checkout");
@@ -75,7 +58,7 @@ export default function Success() {
 
   const total =
     order.total ??
-    order.items.reduce((acc, item) => acc + item.price * item.qty, 0);
+    items.reduce((acc, item) => acc + item.price * item.qty, 0);
 
   return (
     <div className="min-h-screen flex flex-col bg-white print:bg-white">
@@ -92,7 +75,7 @@ export default function Success() {
             />
           </div>
 
-          {/* Success Title */}
+          {/* Title */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-semibold mb-2">
               Pagamento efectuado com sucesso 🎉
@@ -109,21 +92,22 @@ export default function Success() {
           {/* Customer Info */}
           <div className="mb-6 border-b pb-4">
             <h2 className="font-semibold mb-2">Informações do Cliente</h2>
-            <p><strong>Nome:</strong> {order.customerName}</p>
-            <p><strong>Email:</strong> {order.customerEmail}</p>
-            <p><strong>Telefone:</strong> {order.customerPhone}</p>
-            <p><strong>Morada:</strong> {order.address}</p>
+            <p><strong>Nome:</strong> {order.name || "-"}</p>
+            <p><strong>Email:</strong> {order.email || "-"}</p>
+            <p><strong>Telefone:</strong> {order.phone || "-"}</p>
+            <p><strong>Morada:</strong> {order.address || "-"}</p>
+            <p><strong>Entrega:</strong> {order.deliveryType || "-"}</p>
           </div>
 
           {/* Items */}
           <div className="mb-6">
             <h2 className="font-semibold mb-4">Itens Comprados</h2>
 
-            {order.items.length === 0 ? (
+            {items.length === 0 ? (
               <p className="text-gray500">Nenhum item encontrado.</p>
             ) : (
               <div className="space-y-4">
-                {order.items.map((item) => (
+                {items.map((item) => (
                   <div
                     key={item.id}
                     className="flex justify-between border-b pb-2"
