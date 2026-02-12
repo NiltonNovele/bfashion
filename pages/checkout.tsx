@@ -51,7 +51,7 @@ const ShoppingCart = () => {
     if (!canProceed) return;
 
     try {
-      const res = await fetch("https://api.bfashion.sale/api/checkout", {
+      const res = await fetch("https://api.bfashion.sale/api/checkout", { //
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

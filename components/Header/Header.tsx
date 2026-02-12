@@ -29,7 +29,6 @@ const Header: React.FC<Props> = ({ title }) => {
 
   const noOfWishlist = wishlist.length;
 
-  // Wishlist animation
   const handleAnimate = useCallback(() => {
     if (noOfWishlist === 0) return;
     setAnimate("animate__animated animate__headShake");
@@ -41,7 +40,6 @@ const Header: React.FC<Props> = ({ title }) => {
     return () => clearTimeout(timer);
   }, [handleAnimate]);
 
-  // Scroll and click outside
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 30);
   }, []);
@@ -92,13 +90,6 @@ const Header: React.FC<Props> = ({ title }) => {
   return (
     <>
       <AppHeader title={title || "BFashion"} />
-      {/* <a
-        href="#main-content"
-        className="whitespace-nowrap absolute z-50 left-4 opacity-90 rounded-md bg-white px-4 py-3 transform -translate-y-40 focus:translate-y-0 transition-all duration-300"
-      >
-        Saltar para o conteúdo principal
-      </a> */}
-
       <TopNav />
 
       <nav
@@ -117,26 +108,10 @@ const Header: React.FC<Props> = ({ title }) => {
 
             {/* Left Menu */}
             <ul className={`flex-0 lg:flex-1 flex ${styles.leftMenu}`}>
-              <li>
-                <Link href="/">
-                  <a>Início</a>
-                </Link>
-              </li>
-              <li>
-                <Link href="/product-category/women">
-                  <a>Mulheres</a>
-                </Link>
-              </li>
-              <li>
-                <Link href="/product-category/bags">
-                  <a>Bolsas</a>
-                </Link>
-              </li>
-              <li>
-                <Link href="/sobre">
-                  <a>Sobre</a>
-                </Link>
-              </li>
+              <li><Link href="/"><a>Início</a></Link></li>
+              <li><Link href="/product-category/women"><a>Mulheres</a></Link></li>
+              <li><Link href="/product-category/bags"><a>Bolsas</a></Link></li>
+              <li><Link href="/sobre"><a>Sobre</a></Link></li>
             </ul>
 
             {/* Logo */}
@@ -145,7 +120,6 @@ const Header: React.FC<Props> = ({ title }) => {
                 <Link href="/">
                   <a>
                     <Image
-                      className="justify-center"
                       src="/logo-prev.png"
                       alt="BFashion Logo"
                       width={220}
@@ -159,28 +133,25 @@ const Header: React.FC<Props> = ({ title }) => {
 
             {/* Right Menu */}
             <ul className={`flex-1 flex justify-end ${styles.rightMenu} relative`}>
-              <li>
-                <SearchForm />
-              </li>
+              <li><SearchForm /></li>
 
               {/* Wishlist */}
               <li>
                 <Link href="/wishlist" passHref>
-                  <button
-                    type="button"
-                    className="relative"
-                    aria-label="Lista de desejos"
-                  >
+                  <button type="button" className="relative">
                     <WhistlistIcon />
                     {noOfWishlist > 0 && (
-                      <span
-                        className={`${animate} absolute text-xs -top-3 -right-3 bg-gray500 text-gray100 py-1 px-2 rounded-full`}
-                      >
+                      <span className={`${animate} absolute text-xs -top-3 -right-3 bg-gray500 text-gray100 py-1 px-2 rounded-full`}>
                         {noOfWishlist}
                       </span>
                     )}
                   </button>
                 </Link>
+              </li>
+
+              {/* NEW: Desktop Cart */}
+              <li className="hidden lg:flex ml-4">
+                <CartItem />
               </li>
 
               {/* Desktop Admin */}
@@ -193,63 +164,44 @@ const Header: React.FC<Props> = ({ title }) => {
                   <ChevronDown size={14} />
                 </button>
 
-                {/* PIN input */}
                 {adminOpen && !pinVerified && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg p-3 z-50 animate-fade-in">
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg p-3 z-50">
                     <form onSubmit={handlePinSubmit} className="flex flex-col gap-2">
                       <input
                         type="password"
                         value={pinInput}
                         onChange={(e) => setPinInput(e.target.value)}
                         placeholder="Introduza o PIN"
-                        className="border border-gray-300 px-2 py-1 rounded text-sm focus:outline-none focus:ring focus:ring-gray-300"
+                        className="border px-2 py-1 rounded text-sm"
                       />
-                      <button
-                        type="submit"
-                        className="bg-gray500 text-white text-sm px-2 py-1 rounded hover:bg-gray600 transition"
-                      >
+                      <button type="submit" className="bg-gray500 text-white text-sm px-2 py-1 rounded">
                         OK
                       </button>
                     </form>
                   </div>
                 )}
 
-                {/* Admin options */}
                 {adminOpen && pinVerified && (
-                  <ul className="absolute right-0 mt-2 w-52 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-fade-in">
+                  <ul className="absolute right-0 mt-2 w-52 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                     <li>
                       <Link href="/orders">
-                        <a className="block px-4 py-2 text-sm hover:bg-gray-100 transition">
+                        <a className="block px-4 py-2 text-sm hover:bg-gray-100">
                           Ver Encomendas
                         </a>
                       </Link>
                     </li>
                     <li>
                       <Link href="/coming-soon">
-                        <a className="block px-4 py-2 text-sm hover:bg-gray-100 transition">
+                        <a className="block px-4 py-2 text-sm hover:bg-gray-100">
                           Gerir Produtos
                         </a>
                       </Link>
                     </li>
-                    {/* <li>
-                      <Link href="/admin/categories">
-                        <a className="block px-4 py-2 text-sm hover:bg-gray-100 transition">
-                          Gerir Categorias
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/users">
-                        <a className="block px-4 py-2 text-sm hover:bg-gray-100 transition">
-                          Gerir Utilizadores
-                        </a>
-                      </Link>
-                    </li> */}
                   </ul>
                 )}
               </li>
 
-              {/* Mobile CartItem instead of Admin */}
+              {/* Mobile Cart (unchanged) */}
               <li className="lg:hidden ml-4">
                 <CartItem />
               </li>

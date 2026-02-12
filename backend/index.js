@@ -50,7 +50,7 @@ app.post("/api/checkout", async (req, res) => {
           amount: 1, //amount: Math.round(total),
           reference: `BFASHION${Date.now()}`,
           description: "Finalize a sua compra na BFashion de forma rápida e segura com a sua carteira móvel preferida. Obrigado por comprar conosco!",
-          return_url: "http://localhost:3000/success",
+          return_url: "https://bfashion.sale/success", //return_url: "https://bfashion.sale/success",
         }),
       }
     );
