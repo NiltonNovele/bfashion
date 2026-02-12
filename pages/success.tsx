@@ -12,36 +12,50 @@ type OrderItem = {
   img1?: string;
 };
 
+type StoredCheckoutData = {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  deliveryType: string;
+  total: number;
+  cart: OrderItem[];
+};
+
 type OrderData = {
-  customerName?: string;
-  customerEmail?: string;
-  customerPhone?: string;
-  address?: string;
-  total?: number;
-  items?: OrderItem[];
-  cartItems?: OrderItem[]; // fallback support
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  address: string;
+  total: number;
+  items: OrderItem[];
 };
 
 export default function Success() {
   const [order, setOrder] = useState<OrderData | null>(null);
-  const [items, setItems] = useState<OrderItem[]>([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("bfashion_checkout");
     if (!saved) return;
 
-    const parsed: OrderData = JSON.parse(saved);
+    const parsed: StoredCheckoutData = JSON.parse(saved);
 
-    // Support both items and cartItems
-    const extractedItems = parsed.items || parsed.cartItems || [];
+    /* ---------- MAP CHECKOUT DATA TO RECEIPT STRUCTURE ---------- */
+    const mappedOrder: OrderData = {
+      customerName: parsed.name,
+      customerEmail: parsed.email,
+      customerPhone: parsed.phone,
+      address: parsed.address,
+      total: parsed.total,
+      items: parsed.cart || [],
+    };
 
-    setOrder(parsed);
-    setItems(extractedItems);
+    setOrder(mappedOrder);
 
     fetch("https://api.bfashion.sale/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(parsed),
+      body: JSON.stringify(mappedOrder),
     }).catch(() => {});
 
     localStorage.removeItem("bfashion_checkout");
@@ -61,7 +75,7 @@ export default function Success() {
 
   const total =
     order.total ??
-    items.reduce((acc, item) => acc + item.price * item.qty, 0);
+    order.items.reduce((acc, item) => acc + item.price * item.qty, 0);
 
   return (
     <div className="min-h-screen flex flex-col bg-white print:bg-white">
@@ -95,21 +109,21 @@ export default function Success() {
           {/* Customer Info */}
           <div className="mb-6 border-b pb-4">
             <h2 className="font-semibold mb-2">Informações do Cliente</h2>
-            <p><strong>Nome:</strong> {order.customerName || "-"}</p>
-            <p><strong>Email:</strong> {order.customerEmail || "-"}</p>
-            <p><strong>Telefone:</strong> {order.customerPhone || "-"}</p>
-            <p><strong>Morada:</strong> {order.address || "-"}</p>
+            <p><strong>Nome:</strong> {order.customerName}</p>
+            <p><strong>Email:</strong> {order.customerEmail}</p>
+            <p><strong>Telefone:</strong> {order.customerPhone}</p>
+            <p><strong>Morada:</strong> {order.address}</p>
           </div>
 
           {/* Items */}
           <div className="mb-6">
             <h2 className="font-semibold mb-4">Itens Comprados</h2>
 
-            {items.length === 0 ? (
+            {order.items.length === 0 ? (
               <p className="text-gray500">Nenhum item encontrado.</p>
             ) : (
               <div className="space-y-4">
-                {items.map((item) => (
+                {order.items.map((item) => (
                   <div
                     key={item.id}
                     className="flex justify-between border-b pb-2"
@@ -122,7 +136,7 @@ export default function Success() {
                     </div>
 
                     <p className="font-semibold">
-                      {(item.price * item.qty).toFixed(2)}€
+                      {(item.price * item.qty).toFixed(2)} MZN
                     </p>
                   </div>
                 ))}
@@ -133,7 +147,7 @@ export default function Success() {
           {/* Total */}
           <div className="flex justify-between text-lg font-semibold border-t pt-4">
             <span>Total Pago</span>
-            <span>{total.toFixed(2)}MZN</span>
+            <span>{total.toFixed(2)} MZN</span>
           </div>
 
           {/* Actions */}
