@@ -140,7 +140,7 @@ const VideoNewsCarousel: FC = () => {
 
         {/* MOBILE */}
         <div className="md:hidden relative w-full max-w-sm mx-auto">
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             <motion.div
               key={activeIndex}
               drag="x"
