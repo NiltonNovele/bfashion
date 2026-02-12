@@ -6,6 +6,7 @@ import axios from "axios";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import Button from "../components/Buttons/Button";
+import VideoNewsCarousel from "../components/VideoNewsCarousel/VideoNewsCarousel";
 import Slideshow from "../components/HeroSection/Slideshow";
 import OverlayContainer from "../components/OverlayContainer/OverlayContainer";
 import Card from "../components/Card/Card";
@@ -61,56 +62,71 @@ const Home: React.FC<Props> = ({ products }) => {
       <Slideshow />
 
       <main id="main-content" className="-mt-20">
-        <section className="w-full h-auto py-10 border border-b-2 border-gray100">
-          <div className="app-max-width app-x-padding h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="w-full sm:col-span-2 lg:col-span-2">
-              <OverlayContainer
-                imgSrc="/bg-img/banner_minipage1.jpg"
-                imgSrc2="/bg-img/banner_minipage1-tablet.jpg"
-                imgAlt="Novas Chegadas"
-              >
-                <LinkButton
-                  href="/product-category/new-arrivals"
-                  extraClass="absolute bottom-10-per sm:right-10-per z-20"
-                >
-                  Novas Chegadas
-                </LinkButton>
-              </OverlayContainer>
-            </div>
+        <section className="w-full h-auto py-14 border-b border-gray-200 bg-white">
+  <div className="app-max-width app-x-padding h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    
+    {/* NEW ARRIVALS (FEATURED) */}
+    <div className="w-full sm:col-span-2 lg:col-span-2 group">
+      <div className="relative overflow-hidden rounded-2xl shadow-md">
+        <OverlayContainer
+          imgSrc="/new.jpg"
+          imgSrc2="/new.jpg"
+          imgAlt="Novas Chegadas"
+        >
+          <div className="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-all duration-300" />
+          
+          <LinkButton
+            href="/product-category/new-arrivals"
+            extraClass="absolute bottom-8 left-8 z-20 group-hover:scale-105 transition-transform"
+          >
+            Novas Chegadas
+          </LinkButton>
+        </OverlayContainer>
+      </div>
+    </div>
 
-            <div className="w-full">
-              <OverlayContainer imgSrc="/bg-img/banner_minipage2.jpg" imgAlt="Coleção Feminina">
-                <LinkButton href="/product-category/women" extraClass="absolute bottom-10-per z-20">
-                  Coleção Feminina
-                </LinkButton>
-              </OverlayContainer>
-            </div>
+    {/* WOMEN (NOW WIDER) */}
+    <div className="w-full sm:col-span-2 lg:col-span-2 group">
+      <div className="relative overflow-hidden rounded-2xl shadow-md">
+        <OverlayContainer imgSrc="/female.jpg" imgAlt="Coleção Feminina">
+          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300" />
 
-            <div className="w-full">
-              <OverlayContainer imgSrc="/bg-img/banner_minipage3.jpg" imgAlt="Coleção Masculina">
-                <LinkButton href="/product-category/men" extraClass="absolute bottom-10-per z-20">
-                  Coleção Masculina
-                </LinkButton>
-              </OverlayContainer>
-            </div>
-          </div>
-        </section>
+          <LinkButton
+            href="/product-category/women"
+            extraClass="absolute bottom-8 left-8 z-20 group-hover:scale-105 transition-transform"
+          >
+            Coleção Feminina
+          </LinkButton>
+        </OverlayContainer>
+      </div>
+    </div>
 
-        {/* Best Selling */}
-        <section className="app-max-width w-full h-full flex flex-col justify-center mt-16 mb-20">
-          <div className="flex justify-center">
-            <div className="w-3/4 sm:w-1/2 md:w-1/3 text-center mb-8">
-              <h2 className="text-3xl mb-4">Mais Vendidos</h2>
-              <span>Confira os produtos mais populares entre os nossos clientes</span>
-            </div>
-          </div>
+    {/* MALE (KEEP COMMENTED) */}
+    {/*
+    <div className="w-full group">
+      <div className="relative overflow-hidden rounded-2xl shadow-md">
+        <OverlayContainer imgSrc="/male.webp" imgAlt="Coleção Masculina">
+          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300" />
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 lg:gap-x-12 gap-y-6 mb-10 app-x-padding">
-            {currentItems.slice(1, 5).map((item) => (
-              <Card key={item.id} item={item} />
-            ))}
-          </div>
-        </section>
+          <LinkButton
+            href="/product-category/men"
+            extraClass="absolute bottom-6 left-6 z-20 group-hover:scale-105 transition-transform"
+          >
+            Coleção Masculina
+          </LinkButton>
+        </OverlayContainer>
+      </div>
+    </div>
+    */}
+    
+  </div>
+</section>
+
+
+
+        {/*carousel*/}
+        <VideoNewsCarousel />
+
 
         <section className="w-full hidden h-full py-16 md:flex flex-col items-center bg-lightgreen">
           <h2 className="text-3xl">Testemunhos</h2>

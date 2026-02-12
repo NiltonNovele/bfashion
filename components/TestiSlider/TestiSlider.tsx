@@ -7,23 +7,23 @@ const testemunhos = [
   {
     texto:
       "Adorei a qualidade dos produtos! A entrega foi rápida e o atendimento excelente. Recomendo vivamente a BFashion.",
-    nome: "David Ferreira",
-    profissao: "Criador de Conteúdos",
-    imagem: "/testimonials/david.jpg",
+    nome: "Ana Martins",
+    profissao: "Influenciadora Digital",
+    imagem: "/2.png",
   },
   {
     texto:
       "A experiência de compra foi incrível. Produtos elegantes e de ótima qualidade. Voltarei a comprar!",
-    nome: "Neymar Silva",
-    profissao: "Atleta Profissional",
-    imagem: "/testimonials/neymar.jpg",
+    nome: "Carla Mendes",
+    profissao: "Estilista",
+    imagem: "/3.png",
   },
   {
     texto:
       "A BFashion superou as minhas expectativas. Ótimos preços, bom atendimento e envio rápido.",
-    nome: "Ronaldo Costa",
-    profissao: "Empresário",
-    imagem: "/testimonials/ronaldo.jpg",
+    nome: "Juliana Costa",
+    profissao: "Empreendedora",
+    imagem: "/1.jpeg",
   },
 ];
 
@@ -51,29 +51,28 @@ const TestiSlider: FC = () => {
   }, [handleNext]);
 
   return (
-    <div className="relative w-full flex justify-center my-14 overflow-hidden">
-      <div className="w-full max-w-5xl flex justify-center">
+    <div className="relative w-full flex justify-center my-16 overflow-hidden">
+      <div className="w-full max-w-5xl flex justify-center px-4">
         {testemunhos.map(
           (item, index) =>
             index === indexAtual && (
               <div
                 key={item.nome}
-                className={`flex flex-col md:flex-row items-center gap-6 bg-white shadow-md rounded-xl p-6 animate__animated ${animacao}`}
+                className={`flex flex-col md:flex-row items-center gap-8 bg-white shadow-lg rounded-2xl p-8 animate__animated ${animacao}`}
               >
-                {/* IMAGEM / PRODUTO */}
-                <div className="relative w-40 h-56 flex-shrink-0 rounded-lg overflow-hidden">
+                {/* IMAGEM */}
+                <div className="relative w-40 h-56 flex-shrink-0 rounded-xl overflow-hidden shadow-sm">
                   <Image
                     src={item.imagem}
                     alt={item.nome}
                     layout="fill"
                     objectFit="cover"
-                    className="rounded-lg"
                   />
                 </div>
 
                 {/* TEXTO */}
                 <div className="flex flex-col text-center md:text-left">
-                  <p className="text-gray-600 italic mb-4 max-w-md">
+                  <p className="text-gray-600 italic mb-5 max-w-md leading-relaxed">
                     “{item.texto}”
                   </p>
 
@@ -89,18 +88,19 @@ const TestiSlider: FC = () => {
         )}
       </div>
 
-      {/* Botões */}
+      {/* Botão anterior */}
       <button
         onClick={handlePrev}
-        className="absolute left-3 top-1/2 -translate-y-1/2 bg-white shadow-md rounded-full p-2 hover:bg-gray-100 transition"
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white shadow-md rounded-full p-2 hover:bg-gray-100 transition"
         aria-label="Anterior"
       >
         <LeftArrow />
       </button>
 
+      {/* Botão seguinte */}
       <button
         onClick={handleNext}
-        className="absolute right-3 top-1/2 -translate-y-1/2 bg-white shadow-md rounded-full p-2 hover:bg-gray-100 transition"
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white shadow-md rounded-full p-2 hover:bg-gray-100 transition"
         aria-label="Seguinte"
       >
         <RightArrow />
