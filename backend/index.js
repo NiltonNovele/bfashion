@@ -10,6 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+
 /* ---------------- MONGODB ---------------- */
 
 mongoose.connect(process.env.MONGO_URI);

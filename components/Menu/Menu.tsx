@@ -233,7 +233,7 @@ export default function Menu() {
                               Ver Encomendas
                             </a>
                           </Link>
-                          <Link href="/coming-soon">
+                          <Link href="/admin">
                             <a
                               className="block px-4 py-2 hover:bg-gray-100 transition"
                               onClick={closeModal}
