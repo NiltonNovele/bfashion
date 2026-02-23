@@ -24,11 +24,11 @@ type ProductType = {
 
 export default function AdminProducts() {
   const initialMockProducts: ProductType[] = [
-    { _id: "1", name: "Office Midi Dress", price: 6000, image1: "", image2: "", description: "Elegant office-ready dress.", category: { name: "women" }, visible: true },
-    { _id: "2", name: "Summer Dress", price: 6000, image1: "", image2: "", description: "Light and fresh for warm days.", category: { name: "women" }, visible: true },
-    { _id: "3", name: "Long Maxi Dress", price: 6000, image1: "", image2: "", description: "Flowy and modern silhouette.", category: { name: "women" }, visible: false },
-    { _id: "4", name: "Office Tote Bag", price: 7000, image1: "", image2: "", description: "Spacious and minimal design.", category: { name: "bags" }, visible: true },
-    { _id: "5", name: "Mini Crossbody Bag", price: 4200, image1: "", image2: "", description: "Compact everyday essential.", category: { name: "bags" }, visible: true },
+    { _id: "1", name: "Vestido Midi de Escritório", price: 6000, image1: "", image2: "", description: "Vestido elegante ideal para escritório.", category: { name: "women" }, visible: true },
+    { _id: "2", name: "Vestido de Verão", price: 6000, image1: "", image2: "", description: "Leve e fresco para dias quentes.", category: { name: "women" }, visible: true },
+    { _id: "3", name: "Vestido Maxi Comprido", price: 6000, image1: "", image2: "", description: "Silhueta fluida e moderna.", category: { name: "women" }, visible: false },
+    { _id: "4", name: "Mala Tote de Escritório", price: 7000, image1: "", image2: "", description: "Espaçosa e com design minimalista.", category: { name: "bags" }, visible: true },
+    { _id: "5", name: "Mala Crossbody Mini", price: 4200, image1: "", image2: "", description: "Essencial compacto para o dia-a-dia.", category: { name: "bags" }, visible: true },
   ];
 
   const [products, setProducts] = useState<ProductType[]>(initialMockProducts);
@@ -130,10 +130,10 @@ export default function AdminProducts() {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">
-              Products Dashboard
+              Painel de Produtos
             </h1>
             <p className="text-gray-500 text-sm mt-1">
-              Manage and monitor your store products
+              Gerir e monitorizar os produtos da sua loja
             </p>
           </div>
 
@@ -142,17 +142,17 @@ export default function AdminProducts() {
             className="bg-black text-black px-6 py-3 rounded-2xl flex items-center gap-2 shadow-md hover:scale-[1.03] transition"
           >
             <Plus size={18} />
-            Add Product
+            Adicionar Produto
           </button>
         </div>
 
         {/* STATS */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
           <StatCard title="Total" value={total} icon={<Layers size={18} />} />
-          <StatCard title="Women" value={women} icon={<ShoppingBag size={18} />} />
-          <StatCard title="Bags" value={bags} icon={<Handbag size={18} />} />
-          <StatCard title="Visible" value={visible} icon={<Eye size={18} />} />
-          <StatCard title="Hidden" value={hidden} icon={<EyeOff size={18} />} />
+          <StatCard title="Mulheres" value={women} icon={<ShoppingBag size={18} />} />
+          <StatCard title="Malas" value={bags} icon={<Handbag size={18} />} />
+          <StatCard title="Visíveis" value={visible} icon={<Eye size={18} />} />
+          <StatCard title="Ocultos" value={hidden} icon={<EyeOff size={18} />} />
         </div>
 
         {/* PRODUCTS */}
@@ -192,11 +192,11 @@ export default function AdminProducts() {
                 >
                   {product.visible ? (
                     <>
-                      <Eye size={16} /> Visible
+                      <Eye size={16} /> Visível
                     </>
                   ) : (
                     <>
-                      <EyeOff size={16} /> Hidden
+                      <EyeOff size={16} /> Oculto
                     </>
                   )}
                 </button>
@@ -226,12 +226,12 @@ export default function AdminProducts() {
           <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
             <div className="bg-white w-full max-w-lg p-8 rounded-3xl shadow-2xl space-y-6">
               <h2 className="text-xl font-semibold">
-                {editingProduct ? "Edit Product" : "New Product"}
+                {editingProduct ? "Editar Produto" : "Novo Produto"}
               </h2>
 
               <div className="space-y-4">
                 <input
-                  placeholder="Product Name"
+                  placeholder="Nome do Produto"
                   value={form.name}
                   onChange={(e) =>
                     setForm({ ...form, name: e.target.value })
@@ -240,7 +240,7 @@ export default function AdminProducts() {
                 />
 
                 <input
-                  placeholder="Price"
+                  placeholder="Preço"
                   value={form.price}
                   onChange={(e) =>
                     setForm({ ...form, price: e.target.value })
@@ -249,7 +249,7 @@ export default function AdminProducts() {
                 />
 
                 <textarea
-                  placeholder="Description"
+                  placeholder="Descrição"
                   value={form.description}
                   onChange={(e) =>
                     setForm({ ...form, description: e.target.value })
@@ -264,8 +264,8 @@ export default function AdminProducts() {
                   }
                   className="w-full border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-black outline-none"
                 >
-                  <option value="women">Women</option>
-                  <option value="bags">Bags</option>
+                  <option value="women">Mulheres</option>
+                  <option value="bags">Malas</option>
                 </select>
 
                 <label className="flex items-center gap-3 text-sm">
@@ -279,7 +279,7 @@ export default function AdminProducts() {
                       })
                     }
                   />
-                  Visible in store
+                  Visível na loja
                 </label>
 
                 <div className="flex gap-4 pt-2">
@@ -287,14 +287,14 @@ export default function AdminProducts() {
                     onClick={closeModal}
                     className="w-full border border-gray-300 py-3 rounded-xl hover:bg-gray-100 transition"
                   >
-                    Cancel
+                    Cancelar
                   </button>
 
                   <button
                     onClick={saveProduct}
                     className="w-full bg-black text-white py-3 rounded-xl hover:scale-[1.02] transition"
                   >
-                    Save
+                    Guardar
                   </button>
                 </div>
               </div>
