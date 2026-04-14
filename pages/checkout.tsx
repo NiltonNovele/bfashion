@@ -51,7 +51,7 @@ const ShoppingCart = () => {
   if (!canProceed) return;
 
   try {
-    const res = await fetch("http://localhost:5009/api/checkout", {
+    const res = await fetch("https://api.bfashion.sale/api/checkout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
