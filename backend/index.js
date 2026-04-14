@@ -46,20 +46,30 @@ app.post("/api/checkout", async (req, res) => {
         headers: {
           Authorization: `Bearer ${process.env.PAYSUITE_API_KEY}`,
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
-          amount: 1, //amount: Math.round(total),
+          amount: Math.max(10, Math.round(total)), // 🔥 IMPORTANT
+          // method: "mpesa", // optional but helps force rendering
           reference: `BFASHION${Date.now()}`,
-          description: "Finalize a sua compra na BFashion de forma rápida e segura com a sua carteira móvel preferida. Obrigado por comprar conosco!",
-          return_url: "https://bfashion.sale/success", //return_url: "https://bfashion.sale/success",
+          description: "Compra BFashion",
+          return_url: "http://localhost:3000/success",
+          callback_url: "http://localhost:5009/api/webhook", // 🔥 IMPORTANT
         }),
       }
     );
 
     const data = await response.json();
+
+    console.log("PaySuite response:", data); // 🔥 DEBUG
+
+    if (!data || data.status !== "success") {
+      return res.status(400).json(data);
+    }
+
     res.json({ checkout_url: data.data.checkout_url });
   } catch (err) {
-    console.error(err);
+    console.error("Checkout error:", err);
     res.status(500).send("error");
   }
 });

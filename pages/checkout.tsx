@@ -48,47 +48,51 @@ const ShoppingCart = () => {
     name !== "" && email !== "" && phone !== "" && address !== "";
 
   const handleCheckout = async () => {
-    if (!canProceed) return;
+  if (!canProceed) return;
 
-    try {
-      const res = await fetch("https://api.bfashion.sale/api/checkout", { 
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          total: Math.round(totalNumber),
-        }),
-      });
+  try {
+    const res = await fetch("http://localhost:5009/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        total: totalNumber,
+      }),
+    });
 
-      const text = await res.text();
+    const data = await res.json();
 
-      if (!res.ok) {
-        console.error("Server error:", text);
-        return;
-      }
+    console.log("Checkout response:", data);
 
-      const data = JSON.parse(text);
-
-      /* ---------- SAVE ORDER LOCALLY ---------- */
-      localStorage.setItem(
-        "bfashion_checkout",
-        JSON.stringify({
-          name,
-          email,
-          phone,
-          address,
-          deliveryType: deli,
-          total: totalNumber,
-          cart,
-        })
-      );
-
-      if (data.checkout_url) {
-        window.location.href = data.checkout_url;
-      }
-    } catch (err) {
-      console.error("Checkout failed:", err);
+    if (!res.ok) {
+      console.error("Server error:", data);
+      return;
     }
-  };
+
+    // SAVE ORDER
+    localStorage.setItem(
+      "bfashion_checkout",
+      JSON.stringify({
+        name,
+        email,
+        phone,
+        address,
+        deliveryType: deli,
+        total: totalNumber,
+        cart,
+      })
+    );
+
+    if (data.checkout_url) {
+      window.location.href = data.checkout_url;
+    } else {
+      console.error("No checkout URL returned");
+    }
+  } catch (err) {
+    console.error("Checkout failed:", err);
+  }
+};
 
   return (
     <div>
