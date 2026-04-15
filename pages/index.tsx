@@ -125,7 +125,7 @@ const Home: React.FC<Props> = ({ products }) => {
 
 
         {/*carousel*/}
-        <VideoNewsCarousel />
+        {/* <VideoNewsCarousel /> */}
 
 
         <section className="w-full h-full py-12 md:py-16 flex flex-col items-center bg-lightgreen">
@@ -133,7 +133,7 @@ const Home: React.FC<Props> = ({ products }) => {
   <TestiSlider />
 </section>
 
-        <section className="app-max-width app-x-padding my-16 flex flex-col">
+        {/* <section className="app-max-width app-x-padding my-16 flex flex-col">
           <div className="text-center mb-6">
             <h2 className="text-3xl">Produtos em Destaque</h2>
           </div>
@@ -147,7 +147,7 @@ const Home: React.FC<Props> = ({ products }) => {
           <div className="flex justify-center">
             <Button value={!isFetching ? "Ver Mais" : "A Carregar..."} onClick={handleSeemore} />
           </div>
-        </section>
+        </section> */}
 
         <div className="border-gray100 border-b-2"></div>
 
